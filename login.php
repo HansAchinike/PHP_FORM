@@ -14,31 +14,33 @@
         <button type="submit" name="submit"> Login </button><br>
         Dont have an account? <a href='form.php'>Register Here</a><br>
         Forgot Password? <a href='reset.php'>Reset password</a>
+        </form>
+    
         <?php
             if (isset($_POST['submit'])) {
-                $email = $_POST['email'];
-                $pwd = $_POST['pwd'];
+            $email = $_POST['email'];
+            $password = $_POST['pwd'];
 
-                $inp = file_get_contents('database.json');
-        
-                $tempArray = json_decode($inp, TRUE);
-                
-                $loginCheck;
-                foreach ($tempArray as $data) {
-                    if ($data['Email'] == $email && $data['Password'] == $pwd){
-                        $loginCheck += 1;
-                        $_SESSION['array_data'] = $data;
-                    }
-                }
-                if ($loginCheck == 0){
-                    echo "<script>alert ('Wrong details!!')</script>";
-                }else{
-                    echo "<script>alert ('login success!!')</script>";
-                    echo "<script>window.open('index.php','_self')</script>";
+            $db = file_get_contents('database.json');
+    
+            $tempDb = json_decode($db, TRUE);
+            
+            $loginCheck;
+            foreach ($tempDb as $data) {
+                if ($data['email'] == $email && $data['password'] == $password){
+                    $loginCheck += 1;
+                    $_SESSION['arrayData'] = $data;
                 }
             }
+            if ($loginCheck == 0){
+                echo "<script>alert ('Wrong details!!')</script>";
+            }else{
+                echo "<script>alert ('login success!!')</script>";
+                echo "<script>window.open('index.php','_self')</script>";
+            }
+        }
         ?>
-    </form>
+    
 </body>
 
 </html>
