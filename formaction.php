@@ -1,31 +1,33 @@
 <?php
     if(isset($_POST['submit'])) {
-        $First_name = $_POST['first_name'];
-        $Last_name = $_POST['last_name'];
-        $Email = $_POST['email'];
-        $Password = $_POST['pwd'];
-        $Dob = $_POST['dob'];
-        $array_data = [
-            'First_name' => $First_name,
-            'Last_name'=> $Last_name, 
-            'Email' => $Email,
-            'Password' => $Password,
-            'Dob' => $Dob
+         $firstName = $_POST['first_name'];
+        $lastName = $_POST['last_name'];
+        $email = $_POST['email'];
+        $password = $_POST['pwd'];
+        $dob = $_POST['dob'];
+        $md5Id = md5($email);
+        $arrayData = [
+            'id' => $md5Id,
+            'firstName' => $firstName,
+            'lastName'=> $lastName, 
+            'email' => $email,
+            'password' => $password,
+            'dob' => $dob
         ];
 
-        $inp = file_get_contents('database.json');
+        $db = file_get_contents('database.json');
         
-        $tempArray = json_decode($inp, TRUE);
+        $tempDb = json_decode($db, TRUE);
 
-        foreach ($tempArray as $data) {
-            if ($data['Email'] == $Email){
+        foreach ($tempDb as $data) {
+            if ($data['email'] == $email){
                 echo "<script>alert ('Email already exist')</script>";
                 echo "<script>window.open('form.php','_self')</script>";
                 return;
             }
         }
-        array_push($tempArray, $array_data);
-        $jsonData = json_encode($tempArray);
+        array_push($tempDb, $array_data);
+        $jsonData = json_encode($tempDb);
 
         file_put_contents('database.json', $jsonData);
         echo "<script>alert ('Registration success!! Now login')</script>";
