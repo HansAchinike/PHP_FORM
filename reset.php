@@ -12,24 +12,27 @@
         <?php
             if (isset($_POST['submit'])) {
                 $email = $_POST['email'];
-                $pwd = $_POST['pwd'];
+                $password = $_POST['pwd'];
 
-                $inp = file_get_contents('database.json');
+                $db = file_get_contents('database.json');
         
-                $tempArray = json_decode($inp, TRUE);
+                $tempDb = json_decode($db, TRUE);
                 
-                foreach ($tempArray as $key => $data) {
-                    if ($data['Email'] == $email){
-                        $tempArray[$key]['Password'] = $pwd;
-                        echo "<script>alert ('Reset password success!!')</script>";
-                        echo "<script>window.open('login.php','_self')</script>";
-                    }else{
-                        echo "<script>alert ('Wrong details')</script>";
+                $resetCheck = FALSE;
+                foreach ($tempDb as $key => $data) {
+                    if ($data['email'] == $email){
+                        $tempDb[$key]['password'] = $password;
+                        $resetCheck = TRUE;
                     }
                 }
-                $jsonData = json_encode($tempArray);
+                if ($resetCheck){
+                    echo "<script>alert ('Reset password success!!')</script>";
+                    echo "<script>window.open('login.php','_self')</script>";
+                }else{
+                    echo "<script>alert ('Wrong details')</script>";
+                }
+                $jsonData = json_encode($tempDb);
                 file_put_contents('database.json', $jsonData);
-
             }
         ?>
     </form>
